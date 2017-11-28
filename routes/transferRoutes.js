@@ -8,8 +8,7 @@ module.exports = app => {
     const toReceipt = await Receipts.find({ to: username });
     const fromReceipt = await Receipts.find({ from: username });
     console.log(toReceipt);
-    const data = toReceipt.concat(fromReceipt);
-    res.send({ data });
+    res.send(toReceipt.concat(fromReceipt));
   });
 
   app.post("/api/transfer", (req, res) => {
