@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Receipts = mongoose.model("receipts");
+const User = mongoose.model("users");
 
 module.exports = app => {
   app.get("/api/receipt", async (req, res) => {
@@ -11,9 +12,20 @@ module.exports = app => {
     res.send(toReceipt.concat(fromReceipt));
   });
 
-  app.post("/api/transfer", (req, res) => {
+  app.get("/api/receipts", async (req, res) => {
+    const receipts = await Receipts.find({});
+    console.log(receipts);
+    res.send(receipts);
+  });
+
+  app.post("/api/transfer", async (req, res) => {
     const { to, from, amount } = req.body;
-    console.log(req.body);
+
+    const fromUser = await User.findOne({ username: from });
+    const toUser = await User.findOne({ username: to });
+
+    fromUser.balance -= amount;
+    toUser.balance += amount;
 
     const receipt = new Receipts({
       to,
@@ -21,7 +33,9 @@ module.exports = app => {
       amount,
       timestamp: Date.now()
     });
-    receipt.save();
-    res.send(receipt);
+    await receipt.save();
+    await fromUser.save();
+    await toUser.save();
+    res.send(fromUser);
   });
 };

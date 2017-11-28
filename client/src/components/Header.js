@@ -21,8 +21,8 @@ class Header extends Component {
                 Home
               </Menu.Item>
             </Link>
-            <Link to="/">
-              <Menu.Item as="a">Work</Menu.Item>
+            <Link to="/receipt">
+              <Menu.Item as="a">Receipt</Menu.Item>
             </Link>
             {localStorage.getItem("user") === null ? (
               <Menu.Item position="right">

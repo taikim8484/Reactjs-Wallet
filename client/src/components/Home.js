@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Table, Container, Header, Divider } from "semantic-ui-react";
+import { Table, Container, Header, Divider, Button } from "semantic-ui-react";
+import ModalTransfer from "./ModalTransfer";
 import axios from "axios";
 class Home extends Component {
   state = { username: "", balance: 0, receipts: [] };
@@ -21,14 +22,24 @@ class Home extends Component {
     this.setState({ receipts: receipts.data });
   }
 
+  updateHome() {
+    const { username, balance } = JSON.parse(localStorage.getItem("user"));
+    this.setState({
+      username,
+      balance
+    });
+    this.getReceipt(username);
+  }
+
   renderRow() {
     return this.state.receipts.map(({ to, from, amount, timestamp }) => {
+      const date = new Date(timestamp);
       return (
-        <Table.Row>
-          <Table.Cell>{to}</Table.Cell>
+        <Table.Row key={timestamp}>
           <Table.Cell>{from}</Table.Cell>
+          <Table.Cell>{to}</Table.Cell>
           <Table.Cell>{amount}</Table.Cell>
-          <Table.Cell>{timestamp}</Table.Cell>
+          <Table.Cell>{date.toLocaleString()}</Table.Cell>
         </Table.Row>
       );
     });
@@ -37,28 +48,20 @@ class Home extends Component {
     return (
       <Container text>
         <Header>Username: {this.state.username}</Header>
-
         <Header>Balance: {this.state.balance}</Header>
         <Divider />
         <Table color="green">
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>To</Table.HeaderCell>
               <Table.HeaderCell>From</Table.HeaderCell>
+              <Table.HeaderCell>To</Table.HeaderCell>
               <Table.HeaderCell>Amount</Table.HeaderCell>
               <Table.HeaderCell>Time</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-
-          <Table.Body>
-            {/* <Table.Row>
-              <Table.Cell>Apples</Table.Cell>
-              <Table.Cell>200</Table.Cell>
-              <Table.Cell>0g</Table.Cell>
-            </Table.Row> */}
-            {this.renderRow()}
-          </Table.Body>
+          <Table.Body>{this.renderRow()}</Table.Body>
         </Table>
+        <ModalTransfer updateHome={() => this.updateHome()} />
       </Container>
     );
   }

@@ -22,4 +22,10 @@ module.exports = app => {
       res.status(404).send();
     }
   });
+
+  //Get all user
+  app.get("/api/users", async (req, res) => {
+    const users = await User.find({}).select({ username: 1 });
+    res.send(users);
+  });
 };
