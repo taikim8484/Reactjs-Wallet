@@ -5,10 +5,8 @@ import {
   Form,
   Grid,
   Header,
-  Image,
   Message,
-  Segment,
-  Icon
+  Segment
 } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
@@ -44,7 +42,7 @@ class SignIn extends Component {
           style={{ height: "100%" }}
           verticalAlign="middle"
         >
-          <Grid.Column style={{ maxWidth: 450 }}>
+          <Grid.Column style={{ maxWidth: 450, marginTop: -50 }}>
             {this.state.error ? (
               <Message warning>
                 <Message.Header>Invalid username or password</Message.Header>

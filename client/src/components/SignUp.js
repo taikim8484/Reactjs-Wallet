@@ -5,10 +5,8 @@ import {
   Form,
   Grid,
   Header,
-  Image,
   Message,
-  Segment,
-  Icon
+  Segment
 } from "semantic-ui-react";
 
 import { Link } from "react-router-dom";
@@ -18,6 +16,7 @@ class SignUp extends Component {
     const { username, password } = this.state;
     const user = await axios.post("/api/signup", { username, password });
     console.log(user);
+    this.props.history.push("/signin");
   }
   render() {
     return (
